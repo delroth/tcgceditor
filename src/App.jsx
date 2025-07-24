@@ -131,40 +131,49 @@ function EnergyTypeEdit({ id, card, onChange }) {
   </div>;
 }
 
-function WeakResEdit({ id, field, def, card, onChange }) {
+function WeakResEdit({ name, field, def, card, onChange }) {
   let val = card[field] || [];
 
-  return <div id={id}>
-    {val.map((wr, i) => <div key={i}>
-      <EnergySelector small={true} value={wr["type"]} onChange={(e) => { card[field][i].type = e; onChange(card) }} />
-      <input type="text" value={wr.value} onChange={(e) => { card[field][i].value = e.target.value; onChange(card) }} />
-      <button className="btn-small" onClick={(e) => {
-        card[field].splice(i, 1);
-        for (let j = i; j < card[field].length; ++j) {
-          card[field][j].sortingOrder -= 1;
-        }
-        onChange(card);
-      }}>×</button>
-    </div>)}
-    <div style={{ background: "transparent" }}>
+  return <div className="resource">
+    <h4>
+      {name}
       <button className="btn-small" onClick={(e) => {
         val.push({ "type": "Colorless", "value": def, "sortingOrder": val.length + 1 });
         card[field] = val;
         onChange(card);
       }}>+</button>
+    </h4>
+    <div>
+      {val.map((wr, i) => <div key={i}>
+        <EnergySelector small={true} value={wr["type"]} onChange={(e) => { card[field][i].type = e; onChange(card) }} />
+        <input type="text" value={wr.value} onChange={(e) => { card[field][i].value = e.target.value; onChange(card) }} />
+        <button className="btn-small" onClick={(e) => {
+          card[field].splice(i, 1);
+          for (let j = i; j < card[field].length; ++j) {
+            card[field][j].sortingOrder -= 1;
+          }
+          onChange(card);
+        }}>×</button>
+      </div>)}
     </div>
   </div>
 }
 
-function RetreatCostEdit({ id, card, onChange }) {
+function RetreatCostEdit({ card, onChange }) {
   function addToRetreatCost(delta) {
     card.retreatCost = (card.retreatCost || 0) + delta;
     onChange(card);
   }
-  return <div id={id}>
-    <button className="btn-small btn-add" onClick={(e) => addToRetreatCost(1)}>+</button>
-    {(card.retreatCost || 0) > 0 && <button className="btn-small btn-sub" onClick={(e) => addToRetreatCost(-1)}>–</button>}
-    {[...Array(card.retreatCost || 0)].map((_, i) => <i key={i} className="e-colorless e-small"></i>)}
+  const empty = card.retreatCost <= 0;
+  return <div className="resource">
+    <h4>
+      retreat
+      <button className="btn-small btn-add" onClick={() => addToRetreatCost(1)}>+</button>
+      <button className={`btn-small btn-sub ${empty ? "hidden" : ""}`} onClick={() => addToRetreatCost(-1)}>–</button>
+    </h4>
+    <div>
+      {[...Array(card.retreatCost || 0)].map((_, i) => <i key={i} className="e-colorless e-small"></i>)}
+    </div>
   </div>
 }
 
@@ -359,30 +368,36 @@ function App() {
     <>
       <div id="controls-column">
         <button>Export card</button>
-        <p className="box-header">Expansion info</p>
-        <div className="box meta">
-          <ExpansionInfoEdit field="id" label="ID" card={cardObj} onChange={setCardObjAndText} />
-          <ExpansionInfoEdit field="name" label="Name" card={cardObj} onChange={setCardObjAndText} />
-          <ExpansionInfoEdit field="series" label="Series" card={cardObj} onChange={setCardObjAndText} />
-          <ExpansionInfoEdit field="tcgRegion" label="Region" card={cardObj} onChange={setCardObjAndText} />
-          <ExpansionInfoEdit field="code" label="Code" card={cardObj} onChange={setCardObjAndText} />
-          <ExpansionInfoEdit field="releaseDate" label="Release date" card={cardObj} onChange={setCardObjAndText} />
-          <ExpansionInfoEdit field="cardNumberRightPart" label="Card number right part" card={cardObj} onChange={setCardObjAndText} />
+        <section>
+          <h4 className="box-header">Expansion info</h4>
+          <div className="box meta">
+            <ExpansionInfoEdit field="id" label="ID" card={cardObj} onChange={setCardObjAndText} />
+            <ExpansionInfoEdit field="name" label="Name" card={cardObj} onChange={setCardObjAndText} />
+            <ExpansionInfoEdit field="series" label="Series" card={cardObj} onChange={setCardObjAndText} />
+            <ExpansionInfoEdit field="tcgRegion" label="Region" card={cardObj} onChange={setCardObjAndText} />
+            <ExpansionInfoEdit field="code" label="Code" card={cardObj} onChange={setCardObjAndText} />
+            <ExpansionInfoEdit field="releaseDate" label="Release date" card={cardObj} onChange={setCardObjAndText} />
+            <ExpansionInfoEdit field="cardNumberRightPart" label="Card number right part" card={cardObj} onChange={setCardObjAndText} />
+          </div>
+        </section>
+        <section>
+          <h4 className="box-header">Card metadata</h4>
+          <div className="box meta">
+            <CardInfoEdit field="supertype" label="Supertype" values={["Pokémon", "Trainer", "Energy"]} card={cardObj} onChange={setCardObjAndText} />
+            <CardInfoEdit field="types" label="Types" type="csv" card={cardObj} onChange={setCardObjAndText} />
+            <CardInfoEdit field="pokedexNumbers" label="Pokédex numbers" type="csi" card={cardObj} onChange={setCardObjAndText} />
+            <CardInfoEdit field="format" label="Format" values={["Unlimited", "Expanded", "Standard"]} card={cardObj} onChange={setCardObjAndText} />
+            <CardInfoEdit field="rarity" label="Rarity" card={cardObj} onChange={setCardObjAndText} />
+            <CardInfoEdit field="regulationMark" label="Regulation mark" card={cardObj} onChange={setCardObjAndText} />
+            <CardInfoEdit field="isComplete" label="Complete?" type="bool" card={cardObj} onChange={setCardObjAndText} />
+            <CardInfoEdit field="needsReview" label="Needs review?" type="bool" card={cardObj} onChange={setCardObjAndText} />
+          </div>
+        </section>
+        <section>
+          <h4 className="box-header">Variants</h4>
+          <div className="box">
         </div>
-        <p className="box-header">Card metadata</p>
-        <div className="box meta">
-          <CardInfoEdit field="supertype" label="Supertype" values={["Pokémon", "Trainer", "Energy"]} card={cardObj} onChange={setCardObjAndText} />
-          <CardInfoEdit field="types" label="Types" type="csv" card={cardObj} onChange={setCardObjAndText} />
-          <CardInfoEdit field="pokedexNumbers" label="Pokédex numbers" type="csi" card={cardObj} onChange={setCardObjAndText} />
-          <CardInfoEdit field="format" label="Format" values={["Unlimited", "Expanded", "Standard"]} card={cardObj} onChange={setCardObjAndText} />
-          <CardInfoEdit field="rarity" label="Rarity" card={cardObj} onChange={setCardObjAndText} />
-          <CardInfoEdit field="regulationMark" label="Regulation mark" card={cardObj} onChange={setCardObjAndText} />
-          <CardInfoEdit field="isComplete" label="Complete?" type="bool" card={cardObj} onChange={setCardObjAndText} />
-          <CardInfoEdit field="needsReview" label="Needs review?" type="bool" card={cardObj} onChange={setCardObjAndText} />
-        </div>
-        <p className="box-header">Variants</p>
-        <div className="box">
-        </div>
+        </section>
         <button onClick={() => {
           if (confirm("Do you really want to reset the current card?")) {
             setCardObjAndText(JSON.parse(defaultCardObject));
@@ -394,33 +409,38 @@ function App() {
 
       <div id="card-editor-column">
         <div id="card">
-          <CardInfoEdit id="card-name" placeholder="Card name" field="name" card={cardObj} onChange={setCardObjAndText} />
+          <div id="card-head">
+            {cardObj.supertype == "Pokémon" &&
+              <CardInfoEdit id="pokemon-stage" field="pokemonStage" values={["Basic", "Stage 1", "Stage 2"]} card={cardObj} onChange={setCardObjAndText} />}
 
-          {cardObj.supertype == "Pokémon" && <>
-            <CardInfoEdit id="pokemon-stage" field="pokemonStage" values={["Basic", "Stage 1", "Stage 2"]} card={cardObj} onChange={setCardObjAndText} />
+            <CardInfoEdit id="card-name" placeholder="Card name" field="name" card={cardObj} onChange={setCardObjAndText} />
 
-            {cardObj.pokemonStage != "Basic" && <>
-              <span id="pokemon-evolves-from-label">Evolves from</span>
-              <CardInfoEdit id="pokemon-evolves-from" placeholder="Name" field="evolvesFrom" card={cardObj} onChange={setCardObjAndText} />
+            {cardObj.supertype == "Pokémon" && cardObj.pokemonStage != "Basic" && <>
+              <div id="pokemon-evolves-from">
+                Evolves from
+                <CardInfoEdit placeholder="Name" field="evolvesFrom" card={cardObj} onChange={setCardObjAndText} />
+              </div>
              </>}
 
-            <span id="pokemon-hp-label">HP</span>
-            <CardInfoEdit id="pokemon-hp" placeholder="HP" field="hitPoints" card={cardObj} onChange={setCardObjAndText} />
+            {cardObj.supertype == "Pokémon" && <>
+              <span id="pokemon-hp-label">HP</span>
+              <CardInfoEdit id="pokemon-hp" placeholder="HP" field="hitPoints" card={cardObj} onChange={setCardObjAndText} />
+              <EnergyTypeEdit id="pokemon-energy-type" card={cardObj} onChange={setCardObjAndText} />
+              </>}
+          </div>
 
-            <EnergyTypeEdit id="pokemon-energy-type" card={cardObj} onChange={setCardObjAndText} />
+          <div id="card-art"></div>
 
+          {cardObj.supertype == "Pokémon" && <>
             <div id="pokemon-card-text">
               <EffectsEdit id="pokemon-effects" card={cardObj} onChange={setCardObjAndText} />
               <AttacksEdit id="pokemon-attacks" card={cardObj} onChange={setCardObjAndText} />
             </div>
 
             <div id="pokemon-res-bar">
-              <span id="pokemon-weakness-label">weakness</span>
-              <WeakResEdit id="pokemon-weakness" field="weaknesses" def="x2" card={cardObj} onChange={setCardObjAndText} />
-              <span id="pokemon-resistance-label">resistance</span>
-              <WeakResEdit id="pokemon-resistance" field="resistances" def="-30" card={cardObj} onChange={setCardObjAndText} />
-              <span id="pokemon-retreat-label">retreat</span>
-              <RetreatCostEdit id="pokemon-retreat" card={cardObj} onChange={setCardObjAndText} />
+              <WeakResEdit name="weakness" field="weaknesses" def="x2" card={cardObj} onChange={setCardObjAndText} />
+              <WeakResEdit name="resistance" field="resistances" def="-30" card={cardObj} onChange={setCardObjAndText} />
+              <RetreatCostEdit card={cardObj} onChange={setCardObjAndText} />
             </div>
           </>}
 
@@ -428,14 +448,15 @@ function App() {
             <CardInfoEdit id="card-description" placeholder="Description" field="description" type="multiline" card={cardObj} onChange={setCardObjAndText} />
           </>}
 
-          <div id="card-art"></div>
+          <div id="card-foot">
+            <div id="card-illustrator">
+              <label>Illus. </label>
+              <CardInfoEdit placeholder="Illustrator" field="illustrators" type="csv" card={cardObj} onChange={setCardObjAndText} />
+            </div>
+            <CardInfoEdit id="card-number" placeholder="Number" field="number" card={cardObj} onChange={setCardObjAndText} />
 
-          <span id="card-illustrator-label">Illus.</span>
-          <CardInfoEdit id="card-illustrator" placeholder="Illustrator" field="illustrators" type="csv" card={cardObj} onChange={setCardObjAndText} />
-
-          <CardInfoEdit id="card-number" placeholder="Number" field="number" card={cardObj} onChange={setCardObjAndText} />
-
-          <CardRulesEdit id="card-rules" card={cardObj} onChange={setCardObjAndText} />
+            <CardRulesEdit id="card-rules" card={cardObj} onChange={setCardObjAndText} />
+          </div>
         </div>
       </div>
 
