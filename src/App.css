@@ -1,0 +1,424 @@
+#root {
+  width: 90%;
+  padding: 2rem;
+  display: flex;
+  margin: 0 auto;
+}
+
+.hidden { visibility: hidden; pointer-events: none; }
+
+#controls-column {
+  display: flex;
+  flex-direction: column;
+  flex: 20%;
+  font-size: 85%;
+}
+
+div.meta {
+  display: grid;
+  grid-template-columns: minmax(120px, max-content) 1fr;
+  align-items: center;
+}
+
+#card-editor-column {
+  display: flex;
+  flex-direction: column;
+  flex: 40%;
+  place-items: center;
+}
+
+#json-editor-column {
+  display: flex;
+  flex-direction: column;
+  flex: 40%;
+}
+
+#parse-warnings {
+  height: 75px;
+  overflow: auto;
+}
+
+#json-editor {
+  background-color: #161b22;
+  height: 805px;
+  overflow: auto;
+}
+
+button {
+  margin-bottom: 1em;
+}
+
+div.box {
+  border: 1px solid white;
+  margin-bottom: 1em;
+  padding: 0.5em;
+}
+
+div.vertical-stack {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between
+}
+
+.vertical-stack + i { margin-inline-start: 5px }
+
+p.box-header {
+  margin-top: 0;
+  font-weight: bold;
+}
+
+#controls-column input, #controls-column select {
+  flex-grow: 1;
+  margin-left: 1em;
+}
+
+#controls-column select.invalid-value {
+  background-color: red;
+}
+
+button.btn-small {
+  margin: 0;
+  padding: 1px;
+  font-weight: bold;
+  border: 1px;
+  border-radius: 3px;
+  width: 14px;
+  text-align: center;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+#card {
+  width: 630px;
+  height: 880px;
+  border: 2px solid white;
+  border-radius: 20px;
+  position: relative;
+}
+
+#card input, #card select, #card textarea {
+  field-sizing: content;
+  border: 1px solid #ccc;
+}
+
+#card input {
+  background: #343434;
+  padding-right: 8px;
+}
+
+#card textarea {
+  background: #343434;
+  font-family: inherit;
+  font-size: 16px;
+}
+
+#card > input, #card > select {
+  position: absolute;
+}
+
+#card > span, #card > div {
+  position: absolute;
+}
+
+#card-name {
+  font-size: 40px;
+  top: 5px;
+  left: 120px;
+}
+
+#pokemon-stage {
+  font-size: 20px;
+  top: 20px;
+  left: 10px;
+}
+
+#pokemon-evolves-from-label {
+  background: #242424;
+  z-index: 1;
+  top: 55px;
+  left: 120px;
+  font-size: 16px;
+  font-style: italic;
+}
+
+#pokemon-evolves-from {
+  background: #242424 !important;
+  z-index: 1;
+  top: 57px;
+  left: 210px;
+  font-size: 16px;
+  font-style: italic;
+}
+
+#pokemon-hp-label {
+  font-size: 20px;
+  top: 23px;
+  left: 490px;
+}
+
+#pokemon-hp {
+  font-size: 32px;
+  top: 10px;
+  left: 520px;
+}
+
+#pokemon-energy-type {
+  top: 13px;
+  left: 580px;
+}
+
+#card-art {
+  background-color: #888;
+  width: 590px;
+  height: 300px;
+  top: 70px;
+  left: 20px;
+}
+
+#card-illustrator-label {
+  font-size: 14px;
+  top: 830px;
+  left: 20px;
+}
+
+#card-illustrator {
+  top: 830px;
+  left: 50px;
+}
+
+#card-number {
+  top: 850px;
+  left: 20px;
+}
+
+#card-description {
+  left: 20px;
+  top: 450px;
+  font-size: 22px;
+}
+
+#pokemon-card-text {
+  left: 20px;
+  top: 400px;
+  width: 590px;
+  display: flex;
+  flex-direction: column;
+}
+
+#pokemon-attacks, #pokemon-effects {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+#pokemon-attacks > button, #pokemon-effects > button {
+  margin-top: 5px;
+  width: 80px;
+}
+
+.pokemon-attack, .pokemon-effect, .pokemon-attack-description, .pokemon-effect-description {
+  display: flex;
+  align-items: center;  
+}
+
+.pokemon-effect-type {
+  flex: 25%;
+}
+
+.pokemon-effect-type input {
+  font-size: 120%;
+}
+
+.pokemon-effect-name {
+  flex: 75%;
+}
+
+.pokemon-effect-name input {
+  font-size: 140%;
+}
+
+.pokemon-attack-energies {
+  flex: 25%;
+  display: flex;
+}
+
+.pokemon-attack-name {
+  flex: 60%;
+}
+
+.pokemon-attack-name input {
+  font-weight: bold;
+  font-size: 150%;
+}
+
+.pokemon-attack-damage {
+  flex: 15%;
+}
+
+.pokemon-attack-damage input {
+  font-weight: bold;
+  font-size: 150%;
+}
+
+.pokemon-attack-description div, .pokemon-effect-description div {
+  flex: 5%;
+  text-align: center;
+}
+
+.pokemon-attack-description textarea, .pokemon-effect-description textarea {
+  flex: 95%;
+}
+
+#card-rules {
+  display: flex;
+  flex-direction: column;
+  left: 200px;
+  top: 780px;
+  font-size: 13px;
+}
+
+#card-rules > button {
+  width: 80px;
+  margin-top: 2px;
+}
+
+.card-rule {
+  display: flex;
+  align-items: center;
+}
+
+.card-rule div {
+  flex: 5%;
+  text-align: center;
+}
+
+#card-rules .card-rule textarea {
+  flex: 95%;
+  font-size: 13px;
+}
+
+#pokemon-res-bar {
+  font-size: 16px;
+  border-top: 1px solid white;
+  border-bottom: 1px solid white;
+  height: 40px;
+  width: 630px;
+  top: 730px;
+}
+
+#pokemon-res-bar > div, #pokemon-res-bar > span {
+  position: absolute;
+}
+
+#pokemon-res-bar input {
+  margin-top: 2px;
+}
+
+#pokemon-weakness-label {
+  left: 20px;
+  top: 7px;
+}
+
+#pokemon-weakness {
+  display: flex;
+  flex-direction: column;
+  left: 82px;
+  top: 7px;
+  padding-left: 10px;
+}
+
+#pokemon-weakness > div, #pokemon-resistance > div {
+  position: static;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  background-color: #242424;
+}
+
+#pokemon-weakness input, #pokemon-resistance > input {
+  padding: 4px;
+  min-width: 2ch;
+  border: 0;
+  box-sizing: content-box;
+  border-bottom: 1px solid lightgrey;
+  margin: 0 2px;
+}
+
+#pokemon-resistance-label {
+  left: 200px;
+  top: 7px;
+}
+
+#pokemon-resistance {
+  display: flex;
+  flex-direction: column;
+  left: 267px;
+  top: 7px;
+  padding-left: 10px;
+}
+
+#pokemon-retreat-label {
+  left: 400px;
+  top: 7px;
+}
+
+#pokemon-retreat {
+  left: 460px;
+  top: 7px;
+  height: 25px;
+  padding-left: 10px;
+}
+
+#pokemon-retreat .btn-add {
+  position: absolute;
+  top: -4px;
+  left: -8px;
+}
+
+#pokemon-retreat .btn-sub {
+  position: absolute;
+  bottom: -4px;
+  left: -8px;
+}
+
+#card i {
+  display: inline-block;
+  width: 35px;
+  height: 35px;
+  background-size: 35px;
+  background-repeat: no-repeat;
+  background-image: url('icons/energies/unknown.svg');
+}
+
+#card i.e-small {
+  width: 25px;
+  height: 25px;
+  background-size: 25px;
+}
+
+div.energies-list {
+  background-color: #242424;
+  padding: 10px;
+  border: 1px solid white;
+  z-index: 3;
+  position: absolute !important;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 3px;
+}
+
+div.energies-list i {
+  margin: 1px;
+}
+
+i.e-grass { background-image: url('icons/energies/grass.png') !important; }
+i.e-fire { background-image: url('icons/energies/fire.png') !important; }
+i.e-water { background-image: url('icons/energies/water.png') !important; }
+i.e-lightning { background-image: url('icons/energies/lightning.png') !important; }
+i.e-psychic { background-image: url('icons/energies/psychic.png') !important; }
+i.e-fighting { background-image: url('icons/energies/fighting.png') !important; }
+i.e-darkness { background-image: url('icons/energies/darkness.png') !important; }
+i.e-metal { background-image: url('icons/energies/metal.png') !important; }
+i.e-fairy { background-image: url('icons/energies/fairy.png') !important; }
+i.e-dragon { background-image: url('icons/energies/dragon.png') !important; }
+i.e-colorless { background-image: url('icons/energies/colorless.png') !important; }
