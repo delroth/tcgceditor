@@ -1,23 +1,42 @@
+:root {
+  /* Square energy icon size */
+  --energy-size: 35px;
+  --energy-size-small: 25px;
+  /* Card section padding */
+  --card-padding: 10px 20px;
+}
+
 #root {
   width: 90%;
   padding: 2rem;
   display: flex;
   margin: 0 auto;
+  gap: 1rem;
 }
 
-.hidden { visibility: hidden; pointer-events: none; }
+.hidden {
+  visibility: hidden;
+  pointer-events: none;
+}
 
 #controls-column {
   display: flex;
   flex-direction: column;
   flex: 20%;
   font-size: 85%;
+  gap: 1rem;
+}
+
+#controls-column label {
+  line-height: 1;
 }
 
 div.meta {
   display: grid;
   grid-template-columns: minmax(120px, max-content) 1fr;
   align-items: center;
+  row-gap: 5px;
+  column-gap: 1rem;
 }
 
 #card-editor-column {
@@ -44,13 +63,8 @@ div.meta {
   overflow: auto;
 }
 
-button {
-  margin-bottom: 1em;
-}
-
 div.box {
   border: 1px solid white;
-  margin-bottom: 1em;
   padding: 0.5em;
 }
 
@@ -62,14 +76,15 @@ div.vertical-stack {
 
 .vertical-stack + i { margin-inline-start: 5px }
 
-p.box-header {
-  margin-top: 0;
+h4.box-header {
+  margin: 0;
+  padding: 0 4px;
   font-weight: bold;
-}
-
-#controls-column input, #controls-column select {
-  flex-grow: 1;
-  margin-left: 1em;
+  display: inline-flex;
+  align-self: flex-start;
+  border-radius: 4px 4px 0 0;
+  background-color: white;
+  color: #242424;
 }
 
 #controls-column select.invalid-value {
@@ -90,10 +105,10 @@ button.btn-small {
 
 #card {
   width: 630px;
-  height: 880px;
   border: 2px solid white;
   border-radius: 20px;
-  position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 #card input, #card select, #card textarea {
@@ -112,97 +127,101 @@ button.btn-small {
   font-size: 16px;
 }
 
-#card > input, #card > select {
-  position: absolute;
+:root {
+  --head-padding: 10px;
+  --name-left: 120px;
+  --hp-right: 120px;
 }
 
-#card > span, #card > div {
+#card-head {
+  position: relative;
+  height: 80px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+#card-head > * {
   position: absolute;
 }
 
 #card-name {
   font-size: 40px;
-  top: 5px;
-  left: 120px;
+  left: var(--name-left)
 }
 
 #pokemon-stage {
   font-size: 20px;
-  top: 20px;
-  left: 10px;
-}
-
-#pokemon-evolves-from-label {
-  background: #242424;
-  z-index: 1;
-  top: 55px;
-  left: 120px;
-  font-size: 16px;
-  font-style: italic;
+  left: var(--head-padding);
 }
 
 #pokemon-evolves-from {
-  background: #242424 !important;
+  background: #242424;
   z-index: 1;
-  top: 57px;
-  left: 210px;
+  top: calc(50% + 1.2lh);
+  left: var(--name-left);
+  padding-inline-start: 1ch;
   font-size: 16px;
   font-style: italic;
+  display: flex;
+  gap: 1ch;
+  align-items: center;
+}
+
+#pokemon-evolves-from > input {
+  background: none;
+  font: inherit;
 }
 
 #pokemon-hp-label {
   font-size: 20px;
-  top: 23px;
-  left: 490px;
+  right: var(--hp-right);
 }
 
 #pokemon-hp {
   font-size: 32px;
-  top: 10px;
-  left: 520px;
+  right: calc(var(--hp-right) - 70px)
 }
 
 #pokemon-energy-type {
-  top: 13px;
-  left: 580px;
+  right: var(--head-padding);
 }
 
 #card-art {
   background-color: #888;
-  width: 590px;
+  width: 100%;
   height: 300px;
-  top: 70px;
-  left: 20px;
+  background: url(/images/card-art.jpeg);
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(1) contrast(0.6) brightness(0.4);
 }
 
-#card-illustrator-label {
-  font-size: 14px;
-  top: 830px;
-  left: 20px;
+#card-foot {
+  padding: var(--card-padding);
+  display: grid;
+  grid-template-areas:
+    ".      rules"
+    "illus  rules"
+    "number rules";
+  grid-template-columns: auto 1fr;
+  column-gap: 5rem;
 }
-
 #card-illustrator {
-  top: 830px;
-  left: 50px;
+  grid-area: illus;
 }
-
 #card-number {
-  top: 850px;
-  left: 20px;
+  grid-area: number;
+  justify-self: flex-start;
 }
-
 #card-description {
-  left: 20px;
-  top: 450px;
   font-size: 22px;
 }
 
 #pokemon-card-text {
-  left: 20px;
-  top: 400px;
-  width: 590px;
+  padding: var(--card-padding);
   display: flex;
   flex-direction: column;
+  gap: 1rem;
 }
 
 #pokemon-attacks, #pokemon-effects {
@@ -212,8 +231,12 @@ button.btn-small {
 }
 
 #pokemon-attacks > button, #pokemon-effects > button {
-  margin-top: 5px;
-  width: 80px;
+  margin: 5px;
+  align-self: flex-start;
+}
+
+.pokemon-attack, .pokemon-effect {
+  height: calc(var(--energy-size) + 4px);
 }
 
 .pokemon-attack, .pokemon-effect, .pokemon-attack-description, .pokemon-effect-description {
@@ -270,16 +293,14 @@ button.btn-small {
 }
 
 #card-rules {
+  grid-area: rules;
   display: flex;
   flex-direction: column;
-  left: 200px;
-  top: 780px;
   font-size: 13px;
+  gap: 5px;
 }
-
 #card-rules > button {
-  width: 80px;
-  margin-top: 2px;
+  align-self: flex-start;
 }
 
 .card-rule {
@@ -298,102 +319,60 @@ button.btn-small {
 }
 
 #pokemon-res-bar {
+  padding: var(--card-padding);
   font-size: 16px;
-  border-top: 1px solid white;
-  border-bottom: 1px solid white;
-  height: 40px;
-  width: 630px;
-  top: 730px;
+  border: 1px solid white;
+  border-width: 1px 0;
+  display: grid;
+  /* Tweak the column size for each resource. */
+  grid-template-columns: 2fr 3fr 2fr;
+  /* Optional. */
+  min-height: 56px;
 }
 
-#pokemon-res-bar > div, #pokemon-res-bar > span {
-  position: absolute;
-}
-
-#pokemon-res-bar input {
-  margin-top: 2px;
-}
-
-#pokemon-weakness-label {
-  left: 20px;
-  top: 7px;
-}
-
-#pokemon-weakness {
+#card .resource {
   display: flex;
   flex-direction: column;
-  left: 82px;
-  top: 7px;
-  padding-left: 10px;
 }
-
-#pokemon-weakness > div, #pokemon-resistance > div {
-  position: static;
-  height: 25px;
+#card .resource > h4 {
+  margin: 0;
+  padding: 0;
+  font-weight: normal;
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  align-items: center;
+}
+#card .resource > div {
   display: flex;
   align-items: center;
-  background-color: #242424;
+  flex-direction: row;
+  gap: 5px;
+}
+#card .resource > div > div {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 2px;
 }
 
-#pokemon-weakness input, #pokemon-resistance > input {
+.resource input {
   padding: 4px;
   min-width: 2ch;
-  border: 0;
-  box-sizing: content-box;
-  border-bottom: 1px solid lightgrey;
-  margin: 0 2px;
-}
-
-#pokemon-resistance-label {
-  left: 200px;
-  top: 7px;
-}
-
-#pokemon-resistance {
-  display: flex;
-  flex-direction: column;
-  left: 267px;
-  top: 7px;
-  padding-left: 10px;
-}
-
-#pokemon-retreat-label {
-  left: 400px;
-  top: 7px;
-}
-
-#pokemon-retreat {
-  left: 460px;
-  top: 7px;
-  height: 25px;
-  padding-left: 10px;
-}
-
-#pokemon-retreat .btn-add {
-  position: absolute;
-  top: -4px;
-  left: -8px;
-}
-
-#pokemon-retreat .btn-sub {
-  position: absolute;
-  bottom: -4px;
-  left: -8px;
 }
 
 #card i {
   display: inline-block;
-  width: 35px;
-  height: 35px;
-  background-size: 35px;
+  width: var(--energy-size);
+  height: var(--energy-size);
+  background-size: 100%;
   background-repeat: no-repeat;
   background-image: url('icons/energies/unknown.svg');
 }
 
 #card i.e-small {
-  width: 25px;
-  height: 25px;
-  background-size: 25px;
+  width: var(--energy-size-small);
+  height: var(--energy-size-small);
 }
 
 div.energies-list {
@@ -401,7 +380,7 @@ div.energies-list {
   padding: 10px;
   border: 1px solid white;
   z-index: 3;
-  position: absolute !important;
+  position: fixed;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 3px;
