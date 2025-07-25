@@ -55,6 +55,8 @@ function MultiTypeEditField({ id, label, placeholder, value, values, type = "str
         {values.map((e) => <option key={e}>{e}</option>)}
       </select>
     )
+  } else if (type == "multiline") {
+    inputElem = <textarea id={id} placeholder={placeholder} value={value ?? ""} onChange = {(e) => onChange(e.target.value)} />;
   } else {
     inputElem = <input id={id} type="text" placeholder={placeholder} value={value ?? ""} onChange={(e) => {
       let v = e.target.value || null;
@@ -445,7 +447,11 @@ function App() {
           </>}
 
           {cardObj.supertype != "Pokémon" && <>
-            <CardInfoEdit id="card-description" placeholder="Description" field="description" type="multiline" card={cardObj} onChange={setCardObjAndText} />
+            <div id="pokemon-card-text">
+              <CardInfoEdit id="card-description" placeholder="Description" field="description" type="multiline" card={cardObj} onChange={setCardObjAndText} />
+              <EffectsEdit id="pokemon-effects" card={cardObj} onChange={setCardObjAndText} />
+              <AttacksEdit id="pokemon-attacks" card={cardObj} onChange={setCardObjAndText} />
+            </div>
           </>}
 
           <div id="card-foot">
