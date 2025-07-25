@@ -201,9 +201,9 @@ button.btn-small {
   padding: var(--card-padding);
   display: grid;
   grid-template-areas:
-    ".      rules"
     "illus  rules"
-    "number rules";
+    "number rules"
+    ".      rules";
   grid-template-columns: auto 1fr;
   column-gap: 5rem;
 }
