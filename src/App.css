@@ -39,6 +39,26 @@ div.meta {
   column-gap: 1rem;
 }
 
+div#variants-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+div#variants-list div.variant {
+  display: flex;
+  gap: 5px;
+  place-items: center;
+}
+
+div.variant button {
+  flex: 5%;
+}
+
+div.variant input {
+  flex: 95%;
+}
+
 #card-editor-column {
   display: flex;
   flex-direction: column;

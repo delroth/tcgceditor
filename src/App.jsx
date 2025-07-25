@@ -133,6 +133,25 @@ function EnergyTypeEdit({ id, card, onChange }) {
   </div>;
 }
 
+function VariantsEdit({ id, card, onChange }) {
+  let variants = card.variants || [];
+
+  return <div id={id} className="box">
+    {variants.map((variant, i) => <div key={i} className="variant">
+      <button className="btn-small" onClick={(e) => {
+        variants.splice(i, 1);
+        onChange(card);
+      }}>×</button>
+      <input type="text" value={variant.type || ""} placeholder="Type" onChange={(e) => { variant.type = e.target.value; onChange(card); }} />
+    </div>)}
+    <button onClick={(e) => {
+      variants.push({ "type": "" });
+      card.variants = variants;
+      onChange(card);
+    }}>Add variant</button>
+  </div>;
+}
+
 function WeakResEdit({ name, field, def, card, onChange }) {
   let val = card[field] || [];
 
@@ -397,8 +416,7 @@ function App() {
         </section>
         <section>
           <h4 className="box-header">Variants</h4>
-          <div className="box">
-        </div>
+          <VariantsEdit id="variants-list" card={cardObj} onChange={setCardObjAndText} />
         </section>
         <button onClick={() => {
           if (confirm("Do you really want to reset the current card?")) {
