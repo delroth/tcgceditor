@@ -105,6 +105,7 @@ button.btn-small {
 
 #card {
   width: 630px;
+  min-height: 880px;
   border: 2px solid white;
   border-radius: 20px;
   display: flex;
