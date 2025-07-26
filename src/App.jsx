@@ -86,6 +86,47 @@ function MultiTypeEditField({ id, label, placeholder, value, values, type = "str
   }
 }
 
+function exportFilenameFromCard(card) {
+  let fn = "";
+  if (card.number) {
+    fn += card.number.split("/")[0] + "-";
+  } else if (card.numberSortingOrder) {
+    fn += String(card.numberSortingOrder).padStart(3, '0') + "-";
+  }
+
+  fn += card.name.toLowerCase().replace(" ", "-").replace("'", "");
+  fn += ".card.json";
+  return fn;
+}
+
+function ExportControls({ card, data, exportUpToDate, onExportSuccessful }) {
+  const [dirHandle, setDirHandle] = useState(null);
+  const filename = exportFilenameFromCard(card);
+
+  return <>
+    <label>Export directory</label>
+    <button onClick={async () => {
+      setDirHandle(await window.showDirectoryPicker({
+        id: "tcgceditor-export",
+        mode: "readwrite",
+        startIn: "documents",
+      }));
+    }}>Select...</button>
+    <label>Filename</label>
+    <input type="text" value={filename} readOnly={true} />
+    <button disabled={dirHandle == null} onClick={async () => {
+      const fh = await dirHandle.getFileHandle(filename, { create: true });
+      const stream = await fh.createWritable();
+      await stream.write(data);
+      await stream.close();
+      onExportSuccessful();
+    }}>Save card</button>
+    <span className={"export-status-" + (exportUpToDate ? "ok" : "old")}>
+      {exportUpToDate ? "Card data saved." : "Card data needs saving."}
+    </span>
+  </>
+}
+
 function ExpansionInfoEdit({ id, field, label, placeholder, values, type = "str", card, onChange }) {
   return <MultiTypeEditField id={id} label={label} placeholder={placeholder} values={values} value={card.expansion?.[field]} type={type} onChange={(v) => {
     card.expansion = card.expansion || {};
@@ -378,18 +419,26 @@ function App() {
   const [cardObj, setCardObj] = useState(JSON.parse(defaultCardObject));
   const [cardJsonText, setCardJsonText] = useState(defaultCardObject);
   const [parseWarnings, setParseWarnings] = useState("");
+  const [exportUpToDate, setExportUpToDate] = useState(false);
 
   function setCardObjAndText(cardObj) {
     cleanUpCard(cardObj);
     setCardObj(cardObj);
     setCardJsonText(JSON.stringify(cardObj, null, 2));
     setParseWarnings("");
+    setExportUpToDate(false);
   }
 
   return (
     <>
       <div id="controls-column">
-        <button>Export card</button>
+        <section>
+          <h4 className="box-header">Export info</h4>
+          <div className="box meta">
+            <ExportControls card={cardObj} data={cardJsonText}
+              exportUpToDate={exportUpToDate} onExportSuccessful={() => { setExportUpToDate(true); }} />
+          </div>
+        </section>
         <section>
           <h4 className="box-header">Expansion info</h4>
           <div className="box meta">
@@ -500,6 +549,7 @@ function App() {
                 pw = e.message;
               }
               setParseWarnings(pw);
+              setExportUpToDate(false);
             }}
             minHeight={805}
             style={{

@@ -39,6 +39,16 @@ div.meta {
   column-gap: 1rem;
 }
 
+span.export-status-ok {
+  font-weight: bold;
+  color: green;
+}
+
+span.export-status-old {
+  font-weight: bold;
+  color: red;
+}
+
 div#variants-list {
   display: flex;
   flex-direction: column;
