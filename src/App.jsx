@@ -30,6 +30,7 @@ function cleanUpCard(card) {
     delete card.evolvesInto;
   } else {
     delete card.pokemonStage;
+    delete card.evolvesFrom;
     delete card.hitPoints;
     delete card.energyTypes;
     delete card.weaknesses;
