@@ -19,6 +19,13 @@
   pointer-events: none;
 }
 
+#history-column {
+  display: flex;
+  flex-direction: column;
+  flex: 10%;
+  height: 880px;
+}
+
 #controls-column {
   display: flex;
   flex-direction: column;
@@ -27,8 +34,31 @@
   gap: 1rem;
 }
 
+#card-editor-column {
+  display: flex;
+  flex-direction: column;
+  flex: 35%;
+  place-items: center;
+}
+
+#json-editor-column {
+  display: flex;
+  flex-direction: column;
+  flex: 35%;
+}
+
 #controls-column label {
   line-height: 1;
+}
+
+#history-column div.box {
+  height: 100%;
+}
+
+#history-column select {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
 }
 
 div.meta {
@@ -67,19 +97,6 @@ div.variant button {
 
 div.variant input {
   flex: 95%;
-}
-
-#card-editor-column {
-  display: flex;
-  flex-direction: column;
-  flex: 40%;
-  place-items: center;
-}
-
-#json-editor-column {
-  display: flex;
-  flex-direction: column;
-  flex: 40%;
 }
 
 #parse-warnings {

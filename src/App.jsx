@@ -41,6 +41,15 @@ function cleanUpCard(card) {
   }
 }
 
+function humanReadableCardName(card) {
+  let name = "";
+  if (card.number) {
+    name += card.number + " ";
+  }
+  name += card.name || "!Unknown!";
+  return name;
+}
+
 function MultiTypeEditField({ id, label, placeholder, value, values, type = "str", onChange }) {
   let inputElem;
   if (type == "bool") {
@@ -95,7 +104,7 @@ function exportFilenameFromCard(card) {
     fn += String(card.numberSortingOrder).padStart(3, '0') + "-";
   }
 
-  fn += card.name.toLowerCase().replace(" ", "-").replace("'", "");
+  fn += (card.name || "unknown").toLowerCase().replace(" ", "-").replace("'", "");
   fn += ".card.json";
   return fn;
 }
@@ -421,6 +430,7 @@ function App() {
   const [cardJsonText, setCardJsonText] = useLocalStorageState("cardJsonText", { defaultValue: defaultCardObject });
   const [parseWarnings, setParseWarnings] = useLocalStorageState("parseWarnings", { defaultValue: "" });
   const [exportUpToDate, setExportUpToDate] = useState(false);
+  const [history, setHistory] = useLocalStorageState("history", { defaultValue: [] });
 
   function setCardObjAndText(cardObj) {
     cleanUpCard(cardObj);
@@ -432,12 +442,30 @@ function App() {
 
   return (
     <>
+      <div id="history-column">
+        <h4 className="box-header">History</h4>
+        <div className="box">
+          <select id="history" size={Math.max(2, history.length)} onChange={(e) => {
+            setCardObjAndText(history[document.getElementById("history").selectedIndex]);
+          }}>
+            {history.map((h, i) => <option key={i}>{humanReadableCardName(h)}</option>)}
+          </select>
+        </div>
+      </div>
+
       <div id="controls-column">
         <section>
           <h4 className="box-header">Export info</h4>
           <div className="box meta">
             <ExportControls card={cardObj} data={cardJsonText}
-              exportUpToDate={exportUpToDate} onExportSuccessful={() => { setExportUpToDate(true); }} />
+              exportUpToDate={exportUpToDate} onExportSuccessful={() => {
+                setExportUpToDate(true);
+                history.unshift(cardObj);
+                if (history.length > 50) {
+                  history.pop();
+                }
+                setHistory(history);
+              }} />
           </div>
         </section>
         <section>
