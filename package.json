@@ -12,7 +12,8 @@
   "dependencies": {
     "@uiw/react-textarea-code-editor": "^3.1.1",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react-dom": "^19.1.0",
+    "use-local-storage-state": "^19.5.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.30.1",

@@ -2,6 +2,7 @@
 // SPDX-FileCopyrightText: 2025 Pierre Bourdon <delroth@gmail.com>
 
 import { Fragment, useState } from 'react'
+import useLocalStorageState from 'use-local-storage-state'
 import './App.css'
 
 import CodeEditor from '@uiw/react-textarea-code-editor'
@@ -416,9 +417,9 @@ function CardRulesEdit({ id, card, onChange }) {
 }
 
 function App() {
-  const [cardObj, setCardObj] = useState(JSON.parse(defaultCardObject));
-  const [cardJsonText, setCardJsonText] = useState(defaultCardObject);
-  const [parseWarnings, setParseWarnings] = useState("");
+  const [cardObj, setCardObj] = useLocalStorageState("cardObj", { defaultValue: JSON.parse(defaultCardObject) });
+  const [cardJsonText, setCardJsonText] = useLocalStorageState("cardJsonText", { defaultValue: defaultCardObject });
+  const [parseWarnings, setParseWarnings] = useLocalStorageState("parseWarnings", { defaultValue: "" });
   const [exportUpToDate, setExportUpToDate] = useState(false);
 
   function setCardObjAndText(cardObj) {
