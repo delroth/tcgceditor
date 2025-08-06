@@ -104,7 +104,7 @@ function exportFilenameFromCard(card) {
     fn += String(card.numberSortingOrder).padStart(3, '0') + "-";
   }
 
-  fn += (card.name || "unknown").toLowerCase().replace(" ", "-").replace("'", "");
+  fn += (card.name || "unknown").toLowerCase().replaceAll(" ", "-").replaceAll("'", "");
   fn += ".card.json";
   return fn;
 }
